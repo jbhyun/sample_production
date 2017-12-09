@@ -1,0 +1,4 @@
+* Run it at ${CMSSW_BASE}/src/ForGit/sample_production/GEN-SIM/CRAB_KNU_TIER2/
+* Make sure input file CrabSubmitList.txt is of correct form, and check number of events settings in skeleton/crab_skeleton.py
+* This codes by default use 1 lhe file, and divide into determined Njobs with NunitEvt(So TotalEvt in LHE = NJob*NunitEvt)
+  Do not waste time making Njob files with NunitEvt if you want to use the codes without any modification
