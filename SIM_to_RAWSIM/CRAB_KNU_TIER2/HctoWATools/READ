@@ -1,0 +1,2 @@
+* Run at CMSSW_8_0_21/src/ForGit/sample_production/SIM_to_RAWSIM/CRAB_KNU_TIER2/
+* Make sure the input list CrabSubmitList.txt is of correct form
