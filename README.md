@@ -1,10 +1,5 @@
-# Clone following branches
-# Moriond17
-  * CMSSW_7_1_16_patch2
-    * GRIDPACK-LHE
-  * CMSSW_7_1_18
-    * GEN-SIM
-  * CMSSW_8_0_21
-    * SIM to RAWSIM
-    * RAWSIM to AODSIM
-    * AODSIM to MiniAOD
+Run2-17 production
+====
+  * Modified from B2G-RunIIFall17wmLHEGS-01851
+  * Step: GENSIM - DigiPUMixL1HLT - RecoEIAOD - MiniAOD 
+  * More details in HowTo.txt in each directory

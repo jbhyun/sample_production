@@ -1,0 +1,43 @@
+<DigiPUMixL1HLT>
+
+Modified from B2G-RunIIFall17DRPremix-02050
+
+*setup commands
+export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
+source $VO_CMS_SW_DIR/cmsset_default.sh
+export SCRAM_ARCH=slc6_amd64_gcc630
+scram p CMSSW CMSSW_9_4_7
+cd CMSSW_9_4_7/src/
+cmsenv
+
+git-cms-init
+git clone https://github.com/jbhyun/sample_production
+cd sample_production
+git checkout -b Run2_17 origin/Run2_17
+cd DigiPUMixL1HLT/<SNUNonbatch/CRAB>
+
+1) SNUNonbatch
+work on SNU nonbatch machines
+
+ - Cleaner.sh : Remove miscellaneous log files created during the job running. Run it after all job done to clean space.
+ - FileList.txt : Input file lists. write absolute paths. Only include file paths, with absence of empty lines.
+ - DigiPUMixL1HLT_cfg.py : cfg file for DigiPUMixL1HLT production
+ - NonBatchSubmitter.sh : arrange running space, manage log files, submit jobs, manage output files if there is any finished jobs.
+   - Params
+     InputDir        : Unused variable for now
+     OutDir          : If TrigMVOut=="T", then move cfg/log/output files to this absolute path
+     OutFileNameBase : Output files will be named as ${OutFileNameBase}_1.root ...
+     InFileList      : Location of input file list.
+     MinBiasList     : Location of Minbias sample list.
+     Script          : Cfg file to run
+     TrigDebug       : Debug mode ("T"/"F") - do not execute the cfg files, produce empty output files.
+     TrigMVOut       : "T"/"F" - If TrigMVOut=="T", then move cfg/log/output files to $OutDir
+     Nmax_phy        : number of allowed cores in the machine (physically maximal)
+     Nmax_man        : set maximul number of simultaenous running jobs 
+                       - The sample production takes very long time. For the courtesey of other potential users, you may wish to leave some cores free.
+ - submit_cronjob_manual.sh : execute NonBatchSubmitter.sh at every designated time period until all job is finished.
+
+  a) write input file list in FileList.txt
+  b) set up the parameters in NonBatchSubmitter.sh
+  c) set up the parameters in submit_cronjob_manual.sh and execute it (./submit_cronjob_manual.sh &)
+
