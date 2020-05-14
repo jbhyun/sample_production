@@ -33,7 +33,7 @@ work on SNU nonbatch machines
      TrigMVOut       : "T"/"F" - If TrigMVOut=="T", then move cfg/log/output files to $OutDir
      Nmax_phy        : number of allowed cores in the machine (physically maximal)
      Nmax_man        : set maximul number of simultaenous running jobs 
-                       - The sample production takes very long time. For the courtesey of other potential users, you may wish to leave some cores free.
+                       - The sample production takes very long time. For the courtesy of other potential users, you may wish to leave some cores free.
  - submit_cronjob_manual.sh : execute NonBatchSubmitter.sh at every designated time period until all job is finished.
 
   a) write input file list in FileList.txt
