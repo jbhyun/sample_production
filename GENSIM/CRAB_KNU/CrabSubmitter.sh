@@ -49,7 +49,6 @@ if [[ ${RunningMode} == "Init" || ${RunningMode} == "Pilot" ]]; then
     sed -i "s|outputDatasetTag\ =\ '[^']*'|outputDatasetTag\ =\ '${CMSSW_VERSION}_${ProdStep}'|g" ${CrabCfgFull}
    
     sed -i "/##LHE_INPUTS_ARE_HERE##/a\ \ \ \ \ \ '${InputPath}'," ${ProdCfgFull}
-    #sed -i "/##LHE_INPUTS_ARE_HERE##/a\ \ \ \ \ \ 'root\:\/\/cluster142.knu.ac.kr\/${InputPath}'," ${ProdCfgFull}
     sed -i "/##LHE_INPUTS_ARE_HERE##/d" ${ProdCfgFull}
    
     cd ${ProcessDir}

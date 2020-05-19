@@ -75,7 +75,7 @@ if [[ ${RunningMode} == "Init" || ${RunningMode} == "Pilot" ]]; then
   done
 elif [[ ${RunningMode} == "Resub" ]]; then
   if [[ ! -e ${ReSubList} ]]; then echo "list to resubmit doesn't exist, exiting"; exit 1; fi
-  BlackListOpt="--siteblacklist=T2_UK_London_IC"
+  BlackListOpt="" #"--siteblacklist=T2_UK_London_IC"
   MaxMemory=2500
   MaxJobRunTime=1400
 
