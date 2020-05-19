@@ -32,7 +32,7 @@ process.maxEvents = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("LHESource",
     fileNames = cms.untracked.vstring(
-        'file:'
+    ##LHE_INPUTS_ARE_HERE##
     ),
     inputCommands = cms.untracked.vstring('keep *',
         'drop LHEXMLStringProduct_*_*_*'),
@@ -138,8 +138,7 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
 )
 
 
-process.ProductionFilterSequence = cms.Sequence(process.generator)
-#process.ProductionFilterSequence = cms.Sequence(process.generator+process.LeptonFilter+process.LepKinFilter)
+process.ProductionFilterSequence = cms.Sequence(process.generator+process.LeptonFilter+process.LepKinFilter)
 
 # Path and EndPath definitions
 process.generation_step = cms.Path(process.pgen)
@@ -149,7 +148,6 @@ process.endjob_step = cms.EndPath(process.endOfProcess)
 process.RAWSIMoutput_step = cms.EndPath(process.RAWSIMoutput)
 
 # Schedule definition
-#process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.endjob_step,process.RAWSIMoutput_step)
 process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.simulation_step,process.endjob_step,process.RAWSIMoutput_step)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)

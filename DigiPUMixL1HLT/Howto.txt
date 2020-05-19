@@ -41,3 +41,33 @@ work on SNU nonbatch machines
   b) set up the parameters in NonBatchSubmitter.sh
   c) set up the parameters in submit_cronjob_manual.sh and execute it (./submit_cronjob_manual.sh &)
 
+
+2) CRAB_KNU
+work on KNU machines using Crab, but can be easily modified to work on other machines by changing path settings
+
+ - CrabInvalidator.sh : Invalidate publication of the output samples in the list.
+                       - After finishing production you might not want to use earlier steps again, so delete the publication.
+ - CrabSubmitter.sh : Script for managing crab jobs
+   - Params
+     ProdStep     : Name of the step. should be the same with the directory name before CRAB_SNU/ (e.g. "GENSIM"). 
+                    This is used to label output/code/publication, etc.
+     CrabCfgFile  : Path to the CMSSW configuration file for crab submission. (e.g. "skeletons/crab_skeleton.py")
+     ProdCfgFile  : Path to the CMSSW configuration file for the production (e.g. "skeletons/GENSIM_LFilter_cfg.py")
+     PUFileList   : Path to the PU file list (e.g. skeletons/PileUpList17.txt)
+     NPUFileToMix : Number of PU files to mix (e.g. 15)
+     InputList    : Path to the text file of input file lists and their aliases. 
+                    In the txt file, 1st/2nd column is for the aliases/paths with the delimiter ' '. Don't forget file:/root://cluster142.knu.ac.kr/ etc in the paths.
+     ReSubList    : Path to the text file for resubmission. Same convension as $InputList.
+     KillList     : Path to the text file for killing crab jobs. Same convention as $InputList.
+     TrigDebug    : For debugging submission code ("T"/"F"). If "F", no crab submission executed, but log is written for planned commands.
+     RunningMode  : Which mode to be executed. Init - submit jobs for the first time / Resub - resubmission of jobs /Kill - kill the jobs / Pilot - pilot running (--dryrun option)
+   
+   - running path for crab submission will be Forge/${ProcName}, Logs will be in Logs/{CommandLogs.txt/StatusReport....txt ... }
+ - skeletons : example config files are located. submission code fixes paths in these code and submit.
+
+  a) Write the input lists & Minbias file list.
+  b) Check/Edit the configuration in $CrabCfgFile/$ProdCfgFile
+  c) Check the parameters in CrabSubmitter.sh
+  d) (Optional) you may run a pilot run to check any weird config value in the files. If you want to use the functionality of memory/job splitting estimates, 
+     change PilotOption="--dryrun --skip-estimates" to PilotOption="--dryrun" in the code.
+  e) run the submission code (./CrabSubmitter.sh)
