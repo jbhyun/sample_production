@@ -3,14 +3,14 @@
 
 
 ProdStep="RecoEIAOD"
-InputList="ListToSubmit.txt"
+InputList="SomeList.txt"
 TrigDebug="T"
 
 
 if [[ -z $CMSSW_BASE ]]; then echo "cmsenv needed, exiting"; exit 1; fi
 if [[ $( pwd ) != "${CMSSW_BASE}/src/sample_production/${ProdStep}/CRAB_KNU" ]]; then echo "Run at CMSSW_BASE of proper dir, exiting"; exit 1; fi
 if [[ ! -e ${InputList} ]]; then echo "input list file doesn't exist, exiting"; exit 1; fi
-if [[ -z $DBS3_CLIENT_ROOT ]]; then export DBS3_CLIENT_ROOT="/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/dbs3-client/3.3.154/"; fi
+export DBS3_CLIENT_ROOT="/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/dbs3-client/3.3.154/"
 if [[ ! -d Forge ]]; then echo "Crab directory doesn't exists, exit"; exit 1; fi
 mkdir -pv Logs;
 ForgePath=$( readlink -f Forge ) 

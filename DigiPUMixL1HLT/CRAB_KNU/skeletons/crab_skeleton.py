@@ -9,16 +9,17 @@ config.General.transferOutputs = True
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.maxMemoryMB = 2500
-#config.JobType.maxJobRuntimeMin = 1400
+config.JobType.maxJobRuntimeMin = 1200
 #config.JobType.numCores = 4
 ##psetName## e.g., config.JobType.psetName = 'GENSIM_crab.py'
 
 ##inputDataset## E.g., config.Data.inputDataset = '/TTToHcToWA_AToMuMu_MHc130_MA35_v2/jbhyun-CMSSW_7_1_18_GEN-SIM-c2345211336d5844e3ea1a8a7fbfc845/USER'
 config.Data.outputDatasetTag = 'CMSSW_9_4_7_DigiPUMixL1HLT'
+config.Data.inputDBS = 'phys03'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 1
 config.Data.publication = True
+config.Data.ignoreLocality = True
 
 config.Site.storageSite = 'T2_KR_KNU'
-#config.Site.whitelist = ['T2_CH_CERN', 'T2_DE_DESY', 'T2_US_Nebraska']
-#config.Site.blacklist = ['T3_US_UMiss']
+config.Site.whitelist = ['T2_US*']

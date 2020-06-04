@@ -7,10 +7,10 @@ ProdStep="RecoEIAOD"
 CrabCfgFile="skeletons/crab_skeleton.py"
 ProdCfgFile="skeletons/RecoEIAOD_cfg.py"
 InputList="ListToSubmit.txt"
-ReSubList=${InputList}
+ReSubList="ListToResub.txt"
 KillList="ListToKill.txt"
-TrigDebug="T"
-RunningMode="Pilot" #Init/Resub/Kill/Pilot
+TrigDebug="F"
+RunningMode="Init" #Init/Resub/Kill/Pilot
 
 if [[ -z $CMSSW_BASE ]]; then echo "cmsenv needed, exiting"; exit 1; fi
 if [[ $( pwd ) != "${CMSSW_BASE}/src/sample_production/${ProdStep}/CRAB_KNU" ]]; then echo "Run at CMSSW_BASE of proper dir, exiting"; exit 1; fi
@@ -56,9 +56,10 @@ if [[ ${RunningMode} == "Init" || ${RunningMode} == "Pilot" ]]; then
   done
 elif [[ ${RunningMode} == "Resub" ]]; then
   if [[ ! -e ${ReSubList} ]]; then echo "list to resubmit doesn't exist, exiting"; exit 1; fi
-  BlackListOpt="" #"--siteblacklist=T2_UK_London_IC"
+  BlackListOpt="" #"--siteblacklist=T2_CH_CERN"
+  WhiteListOpt="--sitewhitelist=T2_US*,T2_DE*,T2_IT*,T2_EE*"
   MaxMemory=2500
-  MaxJobRunTime=1400
+  MaxJobRunTime=600
 
   while read line
   do
@@ -66,8 +67,8 @@ elif [[ ${RunningMode} == "Resub" ]]; then
     Process=$( echo $line | cut -d ' ' -f1 )
     TargetDir=${ForgePath}/${Process}/crab_projects/crab_${Process}_${CMSSW_VERSION}_${ProdStep}/
     if [[ ! -d ${TargetDir} ]]; then echo "Target Dir doesn't exist for ${Process}, skipping"; continue; fi
-    crab resubmit ${BlackListOpt} --maxmemory ${MaxMemory} --maxjobruntime ${MaxJobRunTime} -d ${TargetDir}
-    echo "crab resubmit ${BlackListOpt} --maxmemory ${MaxMemory} --maxjobruntime ${MaxJobRunTime} -d ${TargetDir}" >> ${CommandLog}
+    crab resubmit ${WhiteListOpt} ${BlackListOpt} --maxmemory ${MaxMemory} --maxjobruntime ${MaxJobRunTime} -d ${TargetDir}
+    echo "crab resubmit ${WhiteListOpt} ${BlackListOpt} --maxmemory ${MaxMemory} --maxjobruntime ${MaxJobRunTime} -d ${TargetDir}" >> ${CommandLog}
   done<${ReSubList}
 
 elif [[ ${RunningMode} == "Kill" ]]; then

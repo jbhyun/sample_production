@@ -9,10 +9,11 @@ ProdCfgFile="skeletons/DigiPUMixL1HLT_cfg.py"
 PUFileList="/d0/scratch/jbhyun/Public/PileUpList17.txt"
 NPUFileToMix=15
 InputList="ListToSubmit.txt"
-ReSubList=${InputList}
-KillList="ListToKill.txt"
-TrigDebug="T"
-RunningMode="Pilot" #Init/Resub/Kill/Pilot
+ReSubList="ListToResub.txt"
+#ReSubList=${InputList}
+KillList=""
+TrigDebug="F"
+RunningMode="Status" #Init/Resub/Kill/Pilot
 
 if [[ -z $CMSSW_BASE ]]; then echo "cmsenv needed, exiting"; exit 1; fi
 if [[ $( pwd ) != "${CMSSW_BASE}/src/sample_production/${ProdStep}/CRAB_KNU" ]]; then echo "Run at CMSSW_BASE of proper dir, exiting"; exit 1; fi
@@ -70,14 +71,16 @@ if [[ ${RunningMode} == "Init" || ${RunningMode} == "Pilot" ]]; then
     cd ${ProcessDir}
     PilotOption="";
     if [[ ${RunningMode} == "Pilot" ]]; then PilotOption="--dryrun --skip-estimates"; fi
+    #if [[ ${RunningMode} == "Pilot" ]]; then PilotOption="--dryrun"; fi
     if [[ ${TrigDebug} != "T" ]]; then crab submit -c crab_${Process}.py ${PilotOption}; fi
     echo "crab submit -c crab_${Process}.py ${PilotOption}" >> ${CommandLog};
   done
 elif [[ ${RunningMode} == "Resub" ]]; then
   if [[ ! -e ${ReSubList} ]]; then echo "list to resubmit doesn't exist, exiting"; exit 1; fi
-  BlackListOpt="" #"--siteblacklist=T2_UK_London_IC"
+  BlackListOpt="" #"--siteblacklist=T2_CH_CERN"
+  WhiteListOpt="--sitewhitelist=T2_US*"
   MaxMemory=2500
-  MaxJobRunTime=1400
+  MaxJobRunTime=1200
 
   while read line
   do
@@ -85,8 +88,8 @@ elif [[ ${RunningMode} == "Resub" ]]; then
     Process=$( echo $line | cut -d ' ' -f1 )
     TargetDir=${ForgePath}/${Process}/crab_projects/crab_${Process}_${CMSSW_VERSION}_${ProdStep}/
     if [[ ! -d ${TargetDir} ]]; then echo "Target Dir doesn't exist for ${Process}, skipping"; continue; fi
-    crab resubmit ${BlackListOpt} --maxmemory ${MaxMemory} --maxjobruntime ${MaxJobRunTime} -d ${TargetDir}
-    echo "crab resubmit ${BlackListOpt} --maxmemory ${MaxMemory} --maxjobruntime ${MaxJobRunTime} -d ${TargetDir}" >> ${CommandLog}
+    crab resubmit ${WhiteListOpt} ${BlackListOpt} --maxmemory ${MaxMemory} --maxjobruntime ${MaxJobRunTime} -d ${TargetDir}
+    echo "crab resubmit ${WhiteListOpt} ${BlackListOpt} --maxmemory ${MaxMemory} --maxjobruntime ${MaxJobRunTime} -d ${TargetDir}" >> ${CommandLog}
   done<${ReSubList}
 
 elif [[ ${RunningMode} == "Kill" ]]; then
@@ -119,3 +122,4 @@ else echo "Wrong RunningMode setting."; exit 1;
 fi
 
 echo >> ${CommandLog}
+#crab getoutput --dump
